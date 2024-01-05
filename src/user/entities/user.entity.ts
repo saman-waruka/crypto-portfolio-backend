@@ -1,8 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.interface';
 
 @Entity('users')
-export class UserEntity implements User {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,7 +11,7 @@ export class UserEntity implements User {
   @Column({ default: '' })
   name: string;
 
-  @Column({ default: '' })
+  @Column({ default: '', select: false })
   password: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

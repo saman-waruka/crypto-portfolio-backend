@@ -35,7 +35,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginInfo: LoginDto) {
     const unAuthorizeMessage = 'Email or Password is invalid.';
-    const user = await this.userService.getByEmail(loginInfo.email);
+    const user = await this.userService.getByEmail(loginInfo.email, true);
 
     if (!user) {
       throw new UnauthorizedException(unAuthorizeMessage);

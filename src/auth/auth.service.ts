@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { createHmac, randomBytes } from 'crypto';
-import { User } from 'src/user/entities/user.interface';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +26,6 @@ export class AuthService {
   }
 
   getSignInToken(user: User): string {
-    delete user.password;
     const payload = {
       sub: user.id,
       user: {
