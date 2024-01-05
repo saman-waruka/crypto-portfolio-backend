@@ -5,11 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import Configuration from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [],
+      load: [Configuration],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
