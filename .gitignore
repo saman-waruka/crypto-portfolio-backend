@@ -5,6 +5,8 @@
 # local database 
 /postgres
 
+.env
+
 # Logs
 logs
 *.log

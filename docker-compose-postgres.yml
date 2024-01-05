@@ -6,7 +6,7 @@ services:
     image: postgres:16.1
     restart: always
     volumes:
-      - ./postgres:/var/lib/postgresql
+      - ./postgres/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
