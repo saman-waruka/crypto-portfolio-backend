@@ -18,16 +18,13 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() signupInfo: SignUpDto) {
-    console.log(' body ', signupInfo);
     const existUser = await this.userService.getByEmail(signupInfo.email);
 
-    console.log('existUser ', existUser);
     if (existUser) {
       throw new ConflictException({ email_already_used: true });
     }
 
-    const result = await this.userService.create(signupInfo);
-    console.log(' Result ', result);
+    await this.userService.create(signupInfo);
 
     return { success: true };
   }
