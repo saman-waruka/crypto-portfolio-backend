@@ -1,10 +1,20 @@
-import { Body, ConflictException, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto, SignUpDto } from './auth.dto';
 import { UserService } from 'src/user/user.service';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('signup')
   async signup(@Body() signupInfo: SignUpDto) {
@@ -24,6 +34,23 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginInfo: LoginDto) {
-    return { success: true, loginInfo };
+    const unAuthorizeMessage = 'Email or Password is invalid.';
+    const user = await this.userService.getByEmail(loginInfo.email);
+
+    if (!user) {
+      throw new UnauthorizedException(unAuthorizeMessage);
+    }
+
+    const isPasswordMatch = this.authService.checkPassword(
+      loginInfo.password,
+      user.password,
+    );
+
+    if (!isPasswordMatch) {
+      throw new UnauthorizedException(unAuthorizeMessage);
+    }
+
+    const token = this.authService.getSignInToken(user);
+    return { token };
   }
 }
