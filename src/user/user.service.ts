@@ -32,4 +32,8 @@ export class UserService {
 
     return query.getOne();
   }
+
+  async getById(id: number): Promise<User | null> {
+    return this.userRepository.findOneBy({ id });
+  }
 }

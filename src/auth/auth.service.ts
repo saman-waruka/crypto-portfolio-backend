@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { createHmac, randomBytes } from 'crypto';
 import { User } from 'src/user/entities/user.entity';
+import { JwtPayload } from './jwt.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
   }
 
   getSignInToken(user: User): string {
-    const payload = {
+    const payload: JwtPayload = {
       sub: user.id,
       user: {
         email: user.email,
