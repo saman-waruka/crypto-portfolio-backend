@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 
 @Entity('users')
@@ -17,10 +17,4 @@ export class UserEntity implements User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-
-  @BeforeInsert()
-  emailToLowerCase() {
-    console.log('this is not working');
-    this.email = this.email.toLowerCase();
-  }
 }
