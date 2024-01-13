@@ -15,6 +15,7 @@ export class SignUpDto {
 
 export class LoginDto {
   @IsEmail()
+  @Transform((params) => params.value.toLowerCase())
   email: string;
 
   @IsNotEmpty()
