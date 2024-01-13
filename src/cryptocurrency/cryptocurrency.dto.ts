@@ -1,3 +1,6 @@
+import { Transform } from 'class-transformer';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+
 export class Quote {
   price: number;
   volume_24h: number;
@@ -93,4 +96,21 @@ export class GetListCryptocurrencyResponse {
 export class GetCryptocurrencyMetadataResponse {
   status: ResponseStatus;
   data: CryptocurrencyMetadata;
+}
+
+export class GetListCryptocurrencyQueryParams {
+  @IsInt()
+  @IsOptional()
+  @Transform((params) => Number(params.value))
+  limit?: number;
+}
+
+export class PostFetchCryptocurrencyBody {
+  @IsInt()
+  @IsNotEmpty()
+  limit: number;
+
+  @IsString()
+  @IsNotEmpty()
+  sort: string;
 }

@@ -99,4 +99,12 @@ export class CryptocurrencyService {
     const resultDataObject = result.data;
     return resultDataObject.data;
   }
+
+  async getListLatestFromDatabase(limit = 100) {
+    return this.cryptocurrencyRepository
+      .createQueryBuilder('cryptocurrency')
+      .orderBy('cryptocurrency.id', 'DESC')
+      .limit(limit)
+      .getMany();
+  }
 }
