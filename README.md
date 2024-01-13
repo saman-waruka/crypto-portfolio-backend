@@ -1,6 +1,33 @@
 
 # Crypto Portfolio Backend
 
+## How to start this project with docker container environment
+1. Start PostgreSQL Database
+```
+docker compose -f docker-compose-postgres.yml up -d 
+```
+2. Prepare CoinMarketCap API key
+- Go to https://coinmarketcap.com/ And Sign up
+- Login and goto https://pro.coinmarketcap.com/account
+- Get your `API key` from Overview menu
+- This will use for fill in `COIN_MARKET_API_KEY` inside `.env ` file 
+3. Prepare environment file
+```
+cp .env.example .env
+```
+- Fill PORT for set service serve
+- Fill your database secret  (use IP address in `DB_HOST`)
+- Fill your JWT_SECRET for use in JWT authentication
+- Fill JWT_EXPIRES_IN for set How long JWT token will expires  expiresIn: expressed in seconds or a string describing a time span [vercel/ms](https://github.com/vercel/ms)
+- Fill your COIN_MARKET_BASE_URL (look at the document for get API Domain from [document](https://coinmarketcap.com/api/documentation/v1/#section/Quick-Start-Guide))
+- Fill your COIN_MARKET_API_KEY
+4. Start Backend service using docker
+```
+ docker compose up crypto-port-service -d
+```
+5. Start Frontend from this repository  [crypto-portfolio-frontend](https://github.com/saman-waruka/crypto-portfolio-frontend)
+
+
 ## How to start this project (locally)
 1. Install Dependencies
 ```
@@ -14,8 +41,8 @@ docker compose -f docker-compose-postgres.yml up -d
 3. Prepare CoinMarketCap API key
 - Goto https://coinmarketcap.com/ And Sign up
 - Login goto https://pro.coinmarketcap.com/account
-- Get your API key from Overview menu
-- This will use for fill in COIN_MARKET_API_KEY inside .env file 
+- Get your `API key` from Overview menu
+- This will use for fill in `COIN_MARKET_API_KEY` inside `.env` file 
 
 4. Prepare environment file
 ```
