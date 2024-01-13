@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { CryptocurrencyModule } from './cryptocurrency/cryptocurrency.module';
 import Configuration from './config/configuration';
 
 @Module({
@@ -24,6 +25,7 @@ import Configuration from './config/configuration';
     }),
     UserModule,
     AuthModule,
+    CryptocurrencyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
