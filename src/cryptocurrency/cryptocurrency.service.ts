@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import {
   CryptocurrencyMetadata,
@@ -7,17 +7,21 @@ import {
   GetCryptocurrencyMetadataResponse,
   GetListCryptocurrencyResponse,
 } from './cryptocurrency.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Cryptocurrency } from './entities/cryptocurrency.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CryptocurrencyService {
+  private readonly logger = new Logger(CryptocurrencyService.name);
+
   constructor(
     private readonly httpService: HttpService,
     @InjectRepository(Cryptocurrency)
     private readonly cryptocurrencyRepository: Repository<Cryptocurrency>,
-  ) {}
+  ) {
+    this.initialFirstTime();
+  }
 
   async fetchAndStore(limit = 100, sort = 'market_cap') {
     const cryptos = await this.fetchData(limit, sort);
@@ -106,5 +110,24 @@ export class CryptocurrencyService {
       .orderBy('cryptocurrency.id', 'DESC')
       .limit(limit)
       .getMany();
+  }
+
+  async getListByCryptoIds(ids: number[]): Promise<Cryptocurrency[]> {
+    return this.cryptocurrencyRepository
+      .createQueryBuilder('cryptocurrency')
+      .orderBy('cryptocurrency.created_at', 'DESC')
+      .where({ crypto_id: In(ids) })
+      .getMany();
+  }
+
+  private async initialFirstTime() {
+    const existsDatas = await this.getListLatestFromDatabase();
+    if (!existsDatas.length) {
+      await this.fetchAndStore();
+      this.logger.log('fetchAndStore cryptocurrency ');
+      return;
+    }
+    this.logger.log('skip fetchAndStore cryptocurrency ');
+    return;
   }
 }
